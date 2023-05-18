@@ -1,0 +1,22 @@
+service: scraper-cali
+
+provider:
+  name: aws
+  stage: ${opt:stage, 'prod'}
+  region: ${env:AWS_REGION, 'us-east-1'}
+  ecr:
+    images:
+      img:
+        path: ./
+        platform: linux/amd64
+
+functions:
+  main:
+    timeout: 60
+    memorySize: 5000
+    events:
+      - http:
+          path: prod
+          method: post
+    image:
+      name: img
